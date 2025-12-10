@@ -29,13 +29,12 @@ jobs:
       REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
       REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
 
-  # deploy-staging:
-  #   needs: docker-build
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   uses: alaswadiyy/platform-ci/.github/workflows/deploy-k8s.yml@v1
-  #   with:
-  #     image: "ghcr.io/alaswadiyy/inventory-service:${{ github.sha }}"
-  #     namespace: "inventory-staging"
-  #     deployment: "inventory-service"
-  #   secrets:
-  #     KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG_CONTENT }}
+  deploy-staging:
+    needs: docker-build
+    if: ${{ github.ref == 'refs/heads/main' }}
+    uses: alaswadiyy/platform-ci/.github/workflows/deploy-k8.yml@main
+    with:
+      image: "ghcr.io/alaswadiyy/inventory-service:${{ github.sha }}"
+      namespace: "inventory-staging"
+      deployment: "inventory-service"
+  
