@@ -28,7 +28,7 @@ jobs:
     secrets:
       REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
       REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
-
+      
   deploy-staging:
     needs: docker-build
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -37,4 +37,3 @@ jobs:
       image: "ghcr.io/alaswadiyy/inventory-service:${{ github.sha }}"
       namespace: "inventory-staging"
       deployment: "inventory-service"
-  
