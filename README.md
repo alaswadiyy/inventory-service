@@ -103,5 +103,3 @@ podman run -p 8080:8080 inventory-service:latest
 ```
 
 Podman uses the same commands as Docker and is fully compatible.
-
-> **Note:** Docker builds and image pushes are handled by the CI/CD pipeline in GitHub Actions. Local Docker/Podman setup is optional for development.
