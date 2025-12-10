@@ -2,7 +2,7 @@ name: Inventory Service CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, feature/** ]
+    branches: [ main, feature/pipeline-setup ]
   pull_request:
     branches: [ main ]
 
