@@ -1,0 +1,41 @@
+name: Inventory Service CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, feature/pipeline-setup ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  packages: write
+  actions: read
+
+jobs:
+  matrix-tests:
+    uses: alaswadiyy/platform-ci/.github/workflows/go-matrix-test.yml@main
+    with:
+      working-directory: "."
+      go-module-path: "./"
+
+  docker-build:
+    needs: matrix-tests
+    uses: alaswadiyy/platform-ci/.github/workflows/build-and-push.yml@main
+    with:
+      image-name: "ghcr.io/alaswadiyy/inventory-service:${{ github.sha }}"
+      dockerfile: "./Dockerfile"
+      context: "."
+    secrets:
+      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+
+  # deploy-staging:
+  #   needs: docker-build
+  #   if: ${{ github.ref == 'refs/heads/main' }}
+  #   uses: alaswadiyy/platform-ci/.github/workflows/deploy-k8s.yml@v1
+  #   with:
+  #     image: "ghcr.io/alaswadiyy/inventory-service:${{ github.sha }}"
+  #     namespace: "inventory-staging"
+  #     deployment: "inventory-service"
+  #   secrets:
+  #     KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG_CONTENT }}
